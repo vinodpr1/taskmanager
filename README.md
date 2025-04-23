@@ -1,6 +1,6 @@
 #  Local Setup
 
-``` git clone reponame```
+``` git clone https://github.com/vinodpr1/taskmanager.git```
 
 ```npm install```
 
