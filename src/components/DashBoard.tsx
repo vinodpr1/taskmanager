@@ -3,7 +3,9 @@ import TaskCard from './TaskCard'
 import Button from './Button'
 import { X } from 'lucide-react';
 import axios from 'axios';
-// import { tasks } from '../data/tasks';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { addTask,  setFilter,  setTasks} from '../store/taskSlice';
 
 export interface ITask {
     id: string,
@@ -15,40 +17,59 @@ export interface ITask {
 const DashBoard = () => {
 
   const [modalState, setModalState] = useState(false);  
-  const [task, setTask] = useState<ITask[]>([]);
-  console.log(task);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  const storeTask = useSelector((state: any) => state.task.tasks);
+  const filter = useSelector((state: any) => state.task.filter);
+  const dispatch = useDispatch();
+  console.log("ALLL Stored tasksss", storeTask);
+  
   useEffect(()=>{
-     const fetchaData=async()=>{
-        const data = await axios.get("../data/tasks");
-        // console.log("dataaa", data);
+     const fetchaData=async ()=>{
+      setLoading(true);
+      try {
+        const response = await axios.get<ITask[]>('/tasks.json');
+        dispatch(setTasks(response.data));
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally{
+        setLoading(false);
+      }
      }
-
      fetchaData();
   },[])
+
+  const filteredTasks = storeTask.filter((task: ITask) => {
+    if (filter === 'completed') return task.isCompleted;
+    if (filter === 'notCompleted') return !task.isCompleted;
+    return true;
+  });
  
+
   return (
-    <div className='pt-8'>
+    <div className='pt-8 pb-4'>
      <div className='container flex mx-auto'>
         <div className='flex flex-col gap-4 justify-between w-full'>
-            <div className='flex justify-between'>
-                {/* <div>FIlters</div> */}
+            <div className='flex gap-12'>
                 <div onClick={()=>setModalState(!modalState)}><Button text={"Create Task"}/></div>
+                <div onClick={() => dispatch(setFilter('all'))}><Button text={"All Tasks"}/></div>
+                <div onClick={() => dispatch(setFilter('completed'))}><Button text={"Completed Tasks"}/></div>
+                <div onClick={() => dispatch(setFilter('notCompleted'))}><Button text={"Pending Tasks"}/></div>
             </div>
             {
-            task.length>0? 
-            <div className='w-full mx-auto grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-x-4 gap-y-8'>
+            filteredTasks.length>0? 
+            <div className='w-full mx-auto  grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2 gap-x-4 gap-y-8'>
                  { 
-                   task.map((ts, index)=>{
+                   filteredTasks.map((ts:any, index:any)=>{
                     return(
-                        <TaskCard key={index} title={ts.title} description={ts.description} isCompleted={ts.isCompleted} id={ts.id} setTask={setTask}/>
+                        <TaskCard key={index} title={ts.title} description={ts.description} isCompleted={ts.isCompleted} id={ts.id}/>
                     )
                    })   
                  }
             </div>
             :
             <div>
-                Create New Tasks there is no tasks
+                <h1>No tasks</h1>
             </div>
            }
         </div>
@@ -56,7 +77,7 @@ const DashBoard = () => {
      {
        modalState && 
        <div className='flex opacity-100 justify-center items-centers'>
-         <TaskModal task={task} setTask={setTask} setModalState={setModalState}/>
+         <TaskModal setModalState={setModalState}/>
        </div>
      }
     </div>
@@ -68,16 +89,17 @@ export default DashBoard
 
 
 
+
 interface IModalTask {
-    task : any,
-    setTask: React.Dispatch<React.SetStateAction<ITask[]>>,
-    setModalState: any
+    setModalState: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const TaskModal:React.FC <IModalTask> = ({task, setTask, setModalState }) =>{
+const TaskModal:React.FC <IModalTask> = ({setModalState }) =>{
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+
+    const dispatch = useDispatch();
 
     const handleChange = (e:any) =>{
       e.preventDefault();
@@ -90,10 +112,13 @@ const TaskModal:React.FC <IModalTask> = ({task, setTask, setModalState }) =>{
     }
 
     const handleTaskCreation=()=>{
-        setTask((prev)=>[...prev, {id: crypto.randomUUID(), title, description, isCompleted: false}]);
-        setDescription("");
-        setTitle("");
-    }
+       dispatch(addTask({
+          id: crypto.randomUUID(),
+          title,
+          description,
+          isCompleted: false,
+        }));  
+      }
 
     return (
         <div className='absolute left-[35vw] top-[12vh] bg-gray-300 inset-0 z-50 h-[50vh] w-[30vw] rounded-lg'>

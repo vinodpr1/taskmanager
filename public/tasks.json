@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "title": "Grocery shopping",
+    "description": "Buy milk, eggs, bread, fruits, and vegetables",
+    "isCompleted": false
+  },
+  {
+    "id": "2",
+    "title": "Pay electricity bill",
+    "description": "Due by the 15th of this month",
+    "isCompleted": false
+  },
+  {
+    "id": "3",
+    "title": "Schedule appointment",
+    "description": "For routine check-up and cleaning",
+    "isCompleted": false
+  },
+  {
+    "id": "4",
+    "title": "Laundry",
+    "description": "Wash, dry, and fold clothes",
+    "isCompleted": false
+  },
+  {
+    "id": "5",
+    "title": "Prepare presentation for work",
+    "description": "Quarterly sales report for team meeting",
+    "isCompleted": false
+  },
+  {
+    "id": "6",
+    "title": "Call mom",
+    "description": "Wish her happy birthday and catch up",
+    "isCompleted": false
+  },
+  {
+    "id": "7",
+    "title": "Exercise",
+    "description": "30-minute jog in the park",
+    "isCompleted": false
+  },
+  {
+    "id": "8",
+    "title": "Plan weekend trip",
+    "description": "Research hotels and activities for getaway",
+    "isCompleted": false
+  },
+  {
+    "id": "9",
+    "title": "Organize closet",
+    "description": "Donate clothes not worn in past year",
+    "isCompleted": false
+  },
+  {
+    "id": "10",
+    "title": "Backup computer files",
+    "description": "Save important documents to external drive",
+    "isCompleted": false
+  }
+]

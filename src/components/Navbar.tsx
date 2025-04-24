@@ -1,4 +1,3 @@
-import React from 'react'
 import Button from './Button'
 
 const Navbar = () => {
@@ -9,11 +8,6 @@ const Navbar = () => {
            <h1 className='text-xl font-bold text-gray-600'>Taskify</h1>
          </div>
          <div className='flex gap-4'>
-            <ul className='flex items-center gap-4'>
-                <li>About</li>
-                <li>Contact</li>
-                <li>Try now</li>
-            </ul>
             <Button text={"Login"}/>
          </div>
        </div>
