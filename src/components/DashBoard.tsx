@@ -62,7 +62,7 @@ const DashBoard = () => {
                  { 
                    filteredTasks.map((ts:any, index:any)=>{
                     return(
-                        <TaskCard key={index} title={ts.title} description={ts.description} isCompleted={ts.isCompleted} id={ts.id}/>
+                        <TaskCard key={ts.id} title={ts.title} description={ts.description} isCompleted={ts.isCompleted} id={ts.id}/>
                     )
                    })   
                  }
